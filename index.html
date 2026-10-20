@@ -254,8 +254,8 @@ f.addEventListener('submit',function(e){
  var body={name:v.name,company:v.company,email:v.email,phone:v.phone,preferred_dates:v.dates,employees_expected:v.employees,office_location:v.location,workshop_preference:v.workshop,budget:v.budget,_subject:'New Diwali workshop quote request: '+v.company,_template:'table',_captcha:'false'};
  fetch('https://formsubmit.co/ajax/'+MAIL,{method:'POST',headers:{'Content-Type':'application/json','Accept':'application/json'},body:JSON.stringify(body)})
  .then(function(r){return r.json()}).then(function(j){
-  if(j&&(j.success===true||j.success==='true')){f.hidden=true;document.getElementById('qd').hidden=false;f.reset()}else{throw new Error('x')}})
- .catch(function(){say('We couldn’t send that automatically. Please use WhatsApp or email us directly.',true);
+  if(j&&(j.success===true||j.success==='true')){f.hidden=true;document.getElementById('qd').hidden=false;f.reset()}else{throw new Error((j&&j.message)||'x')}})
+ .catch(function(err){var why=(err&&err.message&&err.message!=='x')?' Reason: '+err.message+'.':'';say('We couldn’t send that automatically.'+why+' Please use WhatsApp or email us directly.',true);
   var a=document.createElement('a');a.href='mailto:'+MAIL+'?subject='+encodeURIComponent('Diwali workshop quote request: '+v.company)+'&body='+encodeURIComponent(text(v));a.textContent=' Email instead';m.appendChild(a)})
  .then(function(){sb.disabled=false;sb.textContent='Send request'});
 });
